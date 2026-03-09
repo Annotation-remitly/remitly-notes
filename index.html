@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Remitly Note Maker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background: #f5f5f5; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; margin-bottom: 30px; }
+        .section { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .subsection { margin-top: 10px; padding: 10px; background: #f9f9f9; border-radius: 3px; }
+        strong { display: block; margin-bottom: 5px; color: #555; }
+        input, textarea, select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px; box-sizing: border-box; }
+        textarea { height: 60px; resize: vertical; }
+        .buttons { text-align: center; margin-top: 30px; }
+        button { background: #007bff; color: white; border: none; padding: 12px 24px; margin: 0 10px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        #popup { display: none; position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 20px; border-radius: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>***CHAT/CALL***</h1>
+        
+        <div class="section">
+            <strong>Customer phone #:</strong> <input type="text" id="phone" placeholder="N/A"><br>
+            <strong>Verifier:</strong> <input type="text" id="verifier" placeholder="N/A"><br>
+            <strong>Concern:</strong> <textarea id="concern" placeholder="N/A"></textarea><br>
+            <strong>Corridor:</strong> <input type="text" id="corridor" placeholder="">
+        </div>
+
+        <div class="section">
+            <strong>Transaction Details:</strong><br>
+            <textarea id="trans-details" placeholder="N/A"></textarea>
+        </div>
+
+        <div class="section">
+            <strong>Refund Details:</strong><br>
+            PDP Missed: <input type="text" id="pdp" placeholder="N/A"><br>
+            Refunded: <input type="text" id="refunded" placeholder="N/A"><br>
+            Refunded By: <input type="text" id="refund-by" placeholder="N/A">
+        </div>
+
+        <div class="section" id="rege-section">
+            <strong>Reg-E:</strong><br>
+            Valid Reg-E: <select id="valid-rege"><option>Yes</option><option>No</option></select><br>
+            Customer Email: <input type="text" id="cust-email"><br>
+            Customer Phone number: <input type="text" id="cust-phone"><br>
+            Reference Number: <input type="text" id="ref-num"><br>
+            Transaction Amount: <input type="text" id="trans-amt">
+
+            <div class="subsection">
+                <strong>Error Apply:</strong> <select id="error-apply"><option>Yes</option><option>No</option></select><br>
+                <strong>Error Type:</strong><br>
+                <select id="error-type">
+                    <option>The completed transfer did not arrive</option>
+                    <option>The transfer was late</option>
+                    <option>The Sender was charged the wrong amount</option>
+                    <option>The amount transferred to the recipient is incorrect</option>
+                    <option>The transfer was delivered to the wrong place or person</option>
+                    <option>Another issue not listed here</option>
+                </select>
+            </div>
+
+            <strong>Compensation:</strong> <select id="compensation"><option>Yes</option><option>No</option></select><br>
+            <strong>Resolution/Outcome:</strong><br>
+            <select id="resolution">
+                <option>Refund of the Transaction Fee Only</option>
+                <option>Cancellation of the Transaction with Full Refund</option>
+                <option>Issuance of Credit or Promotional Offer</option>
+                <option>Credit/Promo Not Applicable</option>
+            </select>
+        </div>
+
+        <div class="section">
+            <strong>Resolution/Actions Taken:</strong><br>
+            <textarea id="resolution-actions" placeholder="N/A"></textarea>
+        </div>
+
+        <div class="section">
+            <strong>Next CSA Action:</strong> <textarea id="next-action" placeholder="N/A"></textarea>
+        </div>
+
+        <div class="section">
+            <strong>Issue Resolved:</strong> <input type="text" id="issue-resolved" placeholder="N/A"><br>
+            <strong>Possible Repeat:</strong> <input type="text" id="possible-repeat" placeholder="N/A">
+        </div>
+
+        <div class="section" style="background: #fff3cd; border-color: #ffeaa7;">
+            <strong style="color: #856404;">📧 NO REG-E/EMAIL FIELDS (ONLY APPLIES IF NO ERROR REG-E)</strong><br>
+            <strong>Customer Name:</strong> <input type="text" id="customer-name" placeholder="Customer Name"><br>
+            <strong>Date of Error:</strong> <input type="text" id="error-date" placeholder="date of error assertion"><br>
+            <strong>Error Reported:</strong> <textarea id="error-reported" placeholder="error reported"></textarea><br>
+            <strong>Transfer Number:</strong> <input type="text" id="transfer-num" placeholder="transfer number if applicable">
+        </div>
+
+        <div class="buttons">
+            <button onclick="copyAll()">Copy All</button>
+            <button onclick="copyNoRegE()">Copy NO REG-E/EMAIL</button>
+            <button onclick="clearNotes()">Clear Notes</button>
+        </div>
+    </div>
+
+    <script>
+        function copyAll() {
+            let content = '';
+            content += '***CHAT/CALL***\n\n';
+            content += `Customer phone #: ${document.getElementById('phone').value || 'N/A'}\n`;
+            content += `Verifier: ${document.getElementById('verifier').value || 'N/A'}\n`;
+            content += `Concern: ${document.getElementById('concern').value || 'N/A'}\n`;
+            content += `Corridor: ${document.getElementById('corridor').value}\n\n`;
+            content += `Transaction Details:\n${document.getElementById('trans-details').value || 'N/A'}\n\n`;
+            content += `Refund Details:\n`;
+            content += `PDP Missed: ${document.getElementById('pdp').value || 'N/A'}\n`;
+            content += `Refunded: ${document.getElementById('refunded').value || 'N/A'}\n`;
+            content += `Refunded By: ${document.getElementById('refund-by').value || 'N/A'}\n\n`;
+            
+            content += `Reg-E:\n`;
+            content += `Valid Reg-E - ${document.getElementById('valid-rege').value}\n`;
+            content += `Customer Email: ${document.getElementById('cust-email').value}\n`;
+            content += `Customer Phone number: ${document.getElementById('cust-phone').value}\n`;
+            content += `Reference Number: ${document.getElementById('ref-num').value}\n`;
+            content += `Transaction Amount: ${document.getElementById('trans-amt').value}\n\n`;
+            content += `Error Apply: ${document.getElementById('error-apply').value}\n`;
+            content += `Error Type: ${document.getElementById('error-type').value}\n`;
+            content += `Compensation: ${document.getElementById('compensation').value}\n\n`;
+            content += `Resolution/Outcome: ${document.getElementById('resolution').value}\n\n`;
+            
+            content += `Resolution/Actions Taken:\n${document.getElementById('resolution-actions').value || 'N/A'}\n\n`;
+            content += `Next CSA Action:\n${document.getElementById('next-action').value || 'N/A'}\n\n`;
+            content += `Issue Resolved: ${document.getElementById('issue-resolved').value || 'N/A'}\n`;
+            content += `Possible Repeat: ${document.getElementById('possible-repeat').value || 'N/A'}`;
+            
+            navigator.clipboard.writeText(content).then(() => showPopup('COPIED'));
+        }
+
+        function copyNoRegE() {
+            let emailTemplate = `Subject: We've completed our review
+
+Dear ${document.getElementById('customer-name').value || '[Customer Name]'}
+
+Thank you for reporting an issue with our service. Here's a brief summary of your report and what we found in our review:
+You contacted us on ${document.getElementById('error-date').value || '[date of error assertion]'} and reported that ${document.getElementById('error-reported').value || '[error reported]'} for the transfer ${document.getElementById('transfer-num').value || '[transfer number if applicable]'}
+
+We apologize for the inconvenience and any worry this may have caused. We reviewed your report carefully, and we were not able to find an error with your transfer. Thank you for waiting while we investigated.
+
+If you would like to request the information we used to make this decision, you may contact us through our support channels 24/7. If we have not resolved this issue to your satisfaction, please read our User Agreement to learn about additional rights you may have.
+Thank you again for reporting this issue and for your patience while we looked into this matter. We are grateful for your feedback.
+
+Best Regards,
+The Remitly team`;
+            
+            navigator.clipboard.writeText(emailTemplate).then(() => showPopup('NO REG-E/EMAIL COPIED'));
+        }
+
+        function clearNotes() {
+            document.querySelectorAll('input, textarea, select').forEach(el => {
+                if (el.placeholder) el.value = '';
+                else if (el.tagName === 'SELECT') el.selectedIndex = 0;
+            });
+            showPopup('Notes Cleared');
+        }
+
+        function showPopup(text) {
+            let popup = document.getElementById('popup');
+            if (!popup) {
+                popup = document.createElement('div');
+                popup.id = 'popup';
+                document.body.appendChild(popup);
+            }
+            popup.textContent = text;
+            popup.style.display = 'block';
+            setTimeout(() => popup.style.display = 'none', 2000);
+        }
+    </script>
+</body>
+</html>
