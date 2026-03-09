@@ -42,16 +42,25 @@
 
         <div class="section" id="rege-section">
             <strong>Reg-E:</strong><br>
-            Valid Reg-E: <select id="valid-rege"><option>Yes</option><option>No</option></select><br>
+            Valid Reg-E: <select id="valid-rege">
+                <option selected>N/A</option>
+                <option>Yes</option>
+                <option>No</option>
+            </select><br>
             Customer Email: <input type="text" id="cust-email"><br>
             Customer Phone number: <input type="text" id="cust-phone"><br>
             Reference Number: <input type="text" id="ref-num"><br>
             Transaction Amount: <input type="text" id="trans-amt">
 
             <div class="subsection">
-                <strong>Error Apply:</strong> <select id="error-apply"><option>Yes</option><option>No</option></select><br>
+                <strong>Error Apply:</strong> <select id="error-apply">
+                    <option selected>N/A</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                </select><br>
                 <strong>Error Type:</strong><br>
                 <select id="error-type">
+                    <option selected>Select Error Type</option>
                     <option>The completed transfer did not arrive</option>
                     <option>The transfer was late</option>
                     <option>The Sender was charged the wrong amount</option>
@@ -61,9 +70,14 @@
                 </select>
             </div>
 
-            <strong>Compensation:</strong> <select id="compensation"><option>Yes</option><option>No</option></select><br>
+            <strong>Compensation:</strong> <select id="compensation">
+                <option selected>N/A</option>
+                <option>Yes</option>
+                <option>No</option>
+            </select><br>
             <strong>Resolution/Outcome:</strong><br>
             <select id="resolution">
+                <option selected>N/A</option>
                 <option>Refund of the Transaction Fee Only</option>
                 <option>Cancellation of the Transaction with Full Refund</option>
                 <option>Issuance of Credit or Promotional Offer</option>
@@ -116,12 +130,12 @@
             
             content += `Reg-E:\n`;
             content += `Valid Reg-E - ${document.getElementById('valid-rege').value}\n`;
-            content += `Customer Email: ${document.getElementById('cust-email').value}\n`;
-            content += `Customer Phone number: ${document.getElementById('cust-phone').value}\n`;
-            content += `Reference Number: ${document.getElementById('ref-num').value}\n`;
-            content += `Transaction Amount: ${document.getElementById('trans-amt').value}\n\n`;
+            content += `Customer Email: ${document.getElementById('cust-email').value || 'N/A'}\n`;
+            content += `Customer Phone number: ${document.getElementById('cust-phone').value || 'N/A'}\n`;
+            content += `Reference Number: ${document.getElementById('ref-num').value || 'N/A'}\n`;
+            content += `Transaction Amount: ${document.getElementById('trans-amt').value || 'N/A'}\n\n`;
             content += `Error Apply: ${document.getElementById('error-apply').value}\n`;
-            content += `Error Type: ${document.getElementById('error-type').value}\n`;
+            content += `Error Type: ${document.getElementById('error-type').value === 'Select Error Type' ? 'N/A' : document.getElementById('error-type').value}\n`;
             content += `Compensation: ${document.getElementById('compensation').value}\n\n`;
             content += `Resolution/Outcome: ${document.getElementById('resolution').value}\n\n`;
             
