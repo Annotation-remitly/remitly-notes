@@ -8,6 +8,7 @@
         h1 { color: #333; text-align: center; margin-bottom: 30px; }
         .section { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
         .subsection { margin-top: 10px; padding: 10px; background: #F9F9F9; border-radius: 3px; }
+        .grey-section { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background: #F5F5F5; }
         strong { display: block; margin-bottom: 5px; color: #555; }
         input, textarea, select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px; box-sizing: border-box; }
         textarea { height: 60px; resize: vertical; }
@@ -32,26 +33,45 @@
     <div class="container">
         <h1>***CS Notes***</h1>
 
-<div class="top-fields">
-    <strong>Channel:</strong> 
-    <select id="channel" onchange="togglePhoneField()">
-        <option selected>Chat</option>
-        <option>Phone</option>
-    </select><br>
-    <strong id="phone-label" class="hidden">Customer phone #:</strong> <input type="text" id="phone" class="hidden" placeholder="N/A"><br>
-    <strong>Reference number:</strong> <input type="text" id="ref-number" placeholder="N/A"><br>
-    <strong>Current Transaction Status:</strong> <input type="text" id="trans-status" placeholder="N/A"><br>
-    <strong>LPE:</strong> <input type="text" id="lpe" placeholder="N/A"><br>
-</div>
+        <div class="top-fields">
+            <strong>Channel:</strong> 
+            <select id="channel" onchange="togglePhoneField()">
+                <option selected>Chat</option>
+                <option>Phone</option>
+            </select><br>
+            <strong id="phone-label" class="hidden">Customer phone #:</strong> <input type="text" id="phone" class="hidden" placeholder="N/A"><br>
+            <strong>Verifier:</strong>
+            <select id="verifier">
+                <option selected>N/A</option>
+                <option>Minor</option>
+                <option>Major</option>
+                <option>Not verified</option>
+            </select><br>
+            <strong>Corridor:</strong> <input type="text" id="corridor" placeholder="N/A"><br>
+        </div>
 
-<div class="section">
-    <strong>Customer Issue:</strong> <input type="text" id="customer-issue" placeholder="N/A">
-</div>
+        <div class="grey-section">
+            <strong>Transaction Details:</strong><br>
+            <strong>Reference number:</strong> <input type="text" id="ref-number" placeholder="N/A"><br>
+            <strong>Current Transaction Status:</strong> <input type="text" id="trans-status" placeholder="N/A"><br>
+            <strong>LPE:</strong> <input type="text" id="lpe" placeholder="N/A">
+        </div>
 
-<div class="section">
-    <strong>Resolution provided:</strong><br>
-    <textarea id="resolution-provided" placeholder="N/A"></textarea>
-</div>
+        <div class="section">
+            <strong>Customer Issue:</strong> <input type="text" id="customer-issue" placeholder="N/A">
+        </div>
+
+        <div class="section">
+            <strong>Refund Details:</strong><br>
+            <strong>PDP Missed:</strong> <input type="text" id="pdp-missed" placeholder="N/A"><br>
+            <strong>Refunded:</strong> <input type="text" id="refunded" placeholder="N/A"><br>
+            <strong>Refunded By:</strong> <input type="text" id="refunded-by" placeholder="N/A">
+        </div>
+
+        <div class="section">
+            <strong>Resolution provided:</strong><br>
+            <textarea id="resolution-provided" placeholder="N/A"></textarea>
+        </div>
 
         <div class="section" id="rege-section">
             <strong>US Customer?</strong> 
@@ -140,6 +160,8 @@
         developed by: Sohail Shaikh | Team Bhakti
     </div>
 
+    <div id="popup"></div>
+
     <script>
         // Toggle phone field based on channel
         function togglePhoneField() {
@@ -183,38 +205,47 @@
         }
 
         function copyAll() {
-            let content = '';
-            content += '***CS Notes***\\n\\n';
-            content += `Channel: ${document.getElementById('channel').value}\\n`;
+            let content = '***CS Notes***\n\n';
+            content += `Channel: ${document.getElementById('channel').value}\n`;
             
             if (document.getElementById('channel').value === 'Phone') {
-                content += `Customer phone #: ${document.getElementById('phone').value || 'N/A'}\\n`;
+                content += `Customer phone #: ${document.getElementById('phone').value || 'N/A'}\n`;
             }
-            content += `Reference number: ${document.getElementById('ref-number').value || 'N/A'}\\n`;
-            content += `Current Transaction Status: ${document.getElementById('trans-status').value || 'N/A'}\\n`;
-            content += `LPE: ${document.getElementById('lpe').value || 'N/A'}\\n\\n`;
-
-            content += `Customer Issue: ${document.getElementById('customer-issue').value || 'N/A'}\\n\\n`;
-            content += `Resolution provided:\\n${document.getElementById('resolution-provided').value || 'N/A'}\\n\\n`;
+            content += `Verifier: ${document.getElementById('verifier').value}\n`;
+            content += `Corridor: ${document.getElementById('corridor').value || 'N/A'}\n\n`;
+            
+            content += `Transaction Details:\n`;
+            content += `Reference number: ${document.getElementById('ref-number').value || 'N/A'}\n`;
+            content += `Current Transaction Status: ${document.getElementById('trans-status').value || 'N/A'}\n`;
+            content += `LPE: ${document.getElementById('lpe').value || 'N/A'}\n\n`;
+            
+            content += `Customer Issue: ${document.getElementById('customer-issue').value || 'N/A'}\n\n`;
+            
+            content += `Refund Details:\n`;
+            content += `PDP Missed: ${document.getElementById('pdp-missed').value || 'N/A'}\n`;
+            content += `Refunded: ${document.getElementById('refunded').value || 'N/A'}\n`;
+            content += `Refunded By: ${document.getElementById('refunded-by').value || 'N/A'}\n\n`;
+            
+            content += `Resolution provided:\n${document.getElementById('resolution-provided').value || 'N/A'}\n\n`;
 
             // Reg-E section (only if US Customer = Yes)
             if (document.getElementById('us-customer').value === 'Yes') {
-                content += `Reg-E (remove if non US customer)\\n`;
-                content += `Valid Reg-E - ${document.getElementById('valid-rege').value}\\n`;
-                content += `Reason to create Reg-E: ${document.getElementById('reason-rege').value || 'N/A'}\\n`;
-                content += `Customer Email: ${document.getElementById('cust-email').value || 'N/A'}\\n`;
-                content += `Customer Phone number: ${document.getElementById('cust-phone').value || 'N/A'}\\n`;
-                content += `Reference Number: ${document.getElementById('ref-num').value || 'N/A'}\\n`;
-                content += `Transaction Amount: ${document.getElementById('trans-amt').value || 'N/A'}\\n\\n`;
-                content += `Did we miss the PDP? ${document.getElementById('miss-pdp').value}\\n`;
-                content += `Did we request any document in partner/risk review? ${document.getElementById('request-doc').value}\\n`;
-                content += `Error Apply: ${document.getElementById('error-apply').value}\\n`;
-                content += `Error Type: ${document.getElementById('error-type').value === 'Select Error Type' ? 'N/A' : document.getElementById('error-type').value}\\n`;
-                content += `Compensation: ${document.getElementById('compensation').value}\\n\\n`;
-                content += `Resolution Outcome: ${document.getElementById('resolution').value}\\n\\n`;
+                content += `Reg-E (remove if non US customer)\n`;
+                content += `Valid Reg-E - ${document.getElementById('valid-rege').value}\n`;
+                content += `Reason to create Reg-E: ${document.getElementById('reason-rege').value || 'N/A'}\n`;
+                content += `Customer Email: ${document.getElementById('cust-email').value || 'N/A'}\n`;
+                content += `Customer Phone number: ${document.getElementById('cust-phone').value || 'N/A'}\n`;
+                content += `Reference Number: ${document.getElementById('ref-num').value || 'N/A'}\n`;
+                content += `Transaction Amount: ${document.getElementById('trans-amt').value || 'N/A'}\n\n`;
+                content += `Did we miss the PDP? ${document.getElementById('miss-pdp').value}\n`;
+                content += `Did we request any document in partner/risk review? ${document.getElementById('request-doc').value}\n`;
+                content += `Error Apply: ${document.getElementById('error-apply').value}\n`;
+                content += `Error Type: ${document.getElementById('error-type').value === 'Select Error Type' ? 'N/A' : document.getElementById('error-type').value}\n`;
+                content += `Compensation: ${document.getElementById('compensation').value}\n\n`;
+                content += `Resolution Outcome: ${document.getElementById('resolution').value}\n\n`;
             }
 
-            content += `Next CSA/CPT Action:\\n${document.getElementById('next-csa-cpt-action').value || 'N/A'}`;
+            content += `Next CSA/CPT Action:\n${document.getElementById('next-csa-cpt-action').value || 'N/A'}`;
 
             navigator.clipboard.writeText(content).then(() => showPopup('COPIED'));
         }
@@ -239,8 +270,9 @@ The Remitly team`;
         }
 
         function clearNotes() {
-            document.querySelectorAll('input, textarea, select').forEach(el => {
-                if (el.placeholder) el.value = '';
+            document.querySelectorAll('input:not([readonly]), textarea, select').forEach(el => {
+                if (el.tagName === 'INPUT' && el.type !== 'readonly') el.value = '';
+                else if (el.tagName === 'TEXTAREA') el.value = '';
                 else if (el.tagName === 'SELECT') el.selectedIndex = 0;
             });
             // Reset toggles
@@ -253,11 +285,6 @@ The Remitly team`;
 
         function showPopup(text) {
             let popup = document.getElementById('popup');
-            if (!popup) {
-                popup = document.createElement('div');
-                popup.id = 'popup';
-                document.body.appendChild(popup);
-            }
             popup.textContent = text;
             popup.style.display = 'block';
             setTimeout(() => popup.style.display = 'none', 2000);
