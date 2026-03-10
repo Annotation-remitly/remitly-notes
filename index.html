@@ -230,7 +230,7 @@
 
             // Reg-E section (only if US Customer = Yes)
             if (document.getElementById('us-customer').value === 'Yes') {
-                content += `Reg-E (remove if non US customer)\n`;
+                content += `Reg-E\n`;
                 content += `Valid Reg-E - ${document.getElementById('valid-rege').value}\n`;
                 content += `Reason to create Reg-E: ${document.getElementById('reason-rege').value || 'N/A'}\n`;
                 content += `Customer Email: ${document.getElementById('cust-email').value || 'N/A'}\n`;
