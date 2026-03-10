@@ -101,11 +101,6 @@
                     </select>
                 </div>
 
-                <strong>Remediation:</strong> <select id="remediation">
-                    <option selected>N/A</option>
-                    <option>Y</option>
-                    <option>N</option>
-                </select><br>
                 <strong>Compensation:</strong> <select id="compensation">
                     <option selected>N/A</option>
                     <option>Yes</option>
@@ -120,11 +115,6 @@
                     <option>Credit/Promo Not Applicable</option>
                 </select>
             </div>
-        </div>
-
-        <div class="section">
-            <strong>Credit/Refund/Promo given by concessions case:</strong><br>
-            <textarea id="concessions" placeholder="N/A"></textarea>
         </div>
 
         <div class="section">
@@ -226,7 +216,6 @@
                 content += `Resolution Outcome: ${document.getElementById('resolution').value}\n\n`;
             }
 
-            content += `Credit/Refund/Promo given by concessions case:\n${document.getElementById('concessions').value || 'N/A'}\n\n`;
             content += `Next CSA Action:\n${document.getElementById('next-action').value || 'N/A'}`;
 
             navigator.clipboard.writeText(content).then(() => showPopup('COPIED'));
