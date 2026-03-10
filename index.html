@@ -32,22 +32,26 @@
     <div class="container">
         <h1>***CS Notes***</h1>
 
-        <div class="top-fields">
-            <strong>Channel:</strong> 
-            <select id="channel" onchange="togglePhoneField()">
-                <option selected>Chat</option>
-                <option>Phone</option>
-            </select><br>
-            <strong id="phone-label" class="hidden">Customer phone #:</strong> <input type="text" id="phone" class="hidden" placeholder="N/A"><br>
-            <strong>Reference number:</strong> <input type="text" id="ref-number" placeholder="N/A"><br>
-            <strong>LPE:</strong> <input type="text" id="lpe" placeholder="N/A"><br>
-            <strong>Customer Issue:</strong> <input type="text" id="customer-issue" placeholder="N/A">
-        </div>
+<div class="top-fields">
+    <strong>Channel:</strong> 
+    <select id="channel" onchange="togglePhoneField()">
+        <option selected>Chat</option>
+        <option>Phone</option>
+    </select><br>
+    <strong id="phone-label" class="hidden">Customer phone #:</strong> <input type="text" id="phone" class="hidden" placeholder="N/A"><br>
+    <strong>Reference number:</strong> <input type="text" id="ref-number" placeholder="N/A"><br>
+    <strong>Current Transaction Status:</strong> <input type="text" id="trans-status" placeholder="N/A"><br>
+    <strong>LPE:</strong> <input type="text" id="lpe" placeholder="N/A"><br>
+</div>
 
-        <div class="section">
-            <strong>Resolution provided:</strong><br>
-            <textarea id="resolution-provided" placeholder="N/A"></textarea>
-        </div>
+<div class="section">
+    <strong>Customer Issue:</strong> <input type="text" id="customer-issue" placeholder="N/A">
+</div>
+
+<div class="section">
+    <strong>Resolution provided:</strong><br>
+    <textarea id="resolution-provided" placeholder="N/A"></textarea>
+</div>
 
         <div class="section" id="rege-section">
             <strong>US Customer?</strong> 
@@ -187,7 +191,9 @@
                 content += `Customer phone #: ${document.getElementById('phone').value || 'N/A'}\n`;
             }
             content += `Reference number: ${document.getElementById('ref-number').value || 'N/A'}\n`;
+            content += `Current Transaction Status: ${document.getElementById('trans-status').value || 'N/A'}\n`;
             content += `LPE: ${document.getElementById('lpe').value || 'N/A'}\n\n`;
+
             content += `Customer Issue: ${document.getElementById('customer-issue').value || 'N/A'}\n\n`;
             content += `Resolution provided:\n${document.getElementById('resolution-provided').value || 'N/A'}\n\n`;
 
