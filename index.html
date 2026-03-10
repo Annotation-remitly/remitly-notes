@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Remitly Note Maker</title>
+    <title>Remitly Note Maker - Enhanced</title>
     <style>
         body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background: #F5F5F5; }
         .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -24,88 +24,111 @@
             font-weight: 300;
             opacity: 0.6;
         }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>***CHAT/CALL***</h1>
+        <h1>***CS Notes***</h1>
 
         <div class="section">
-            <strong>Customer phone #:</strong> <input type="text" id="phone" placeholder="N/A"><br>
-            <strong>Verifier:</strong> <input type="text" id="verifier" placeholder="N/A"><br>
-            <strong>Concern:</strong> <textarea id="concern" placeholder="N/A"></textarea><br>
-            <strong>Corridor:</strong> <input type="text" id="corridor" placeholder="">
+            <strong>Channel:</strong> 
+            <select id="channel" onchange="togglePhoneField()">
+                <option selected>Chat</option>
+                <option>Phone</option>
+            </select><br>
+            <strong id="phone-label" class="hidden">Customer phone #:</strong> <input type="text" id="phone" class="hidden" placeholder="N/A"><br>
+            <strong>Reference number:</strong> <input type="text" id="ref-number" placeholder="N/A"><br>
+            <strong>LPE:</strong> <input type="text" id="lpe" placeholder="N/A"><br>
+            <strong>Customer Issue:</strong> <textarea id="customer-issue" placeholder="N/A"></textarea>
         </div>
 
         <div class="section">
-            <strong>Transaction Details:</strong><br>
-            <textarea id="trans-details" placeholder="N/A"></textarea>
+            <strong>Current Transaction Status:</strong><br>
+            <textarea id="trans-status" placeholder="N/A"></textarea>
         </div>
 
         <div class="section">
-            <strong>Refund Details:</strong><br>
-            PDP Missed: <input type="text" id="pdp" placeholder="N/A"><br>
-            Refunded: <input type="text" id="refunded" placeholder="N/A"><br>
-            Refunded By: <input type="text" id="refund-by" placeholder="N/A">
+            <strong>Resolution provided:</strong><br>
+            <textarea id="resolution-provided" placeholder="N/A"></textarea>
         </div>
 
         <div class="section" id="rege-section">
-            <strong>Reg-E:</strong><br>
-            Valid Reg-E: <select id="valid-rege">
-                <option selected>N/A</option>
+            <strong>US Customer?</strong> 
+            <select id="us-customer" onchange="toggleRegESection()">
+                <option selected>No</option>
                 <option>Yes</option>
-                <option>No</option>
             </select><br>
-            Customer Email: <input type="text" id="cust-email"><br>
-            Customer Phone number: <input type="text" id="cust-phone"><br>
-            Reference Number: <input type="text" id="ref-num"><br>
-            Transaction Amount: <input type="text" id="trans-amt">
-
-            <div class="subsection">
-                <strong>Error Apply:</strong> <select id="error-apply">
+            
+            <div id="reg-e-fields" class="hidden">
+                <strong>Reg-E (remove if non US customer)</strong><br>
+                Valid Reg-E: <select id="valid-rege">
                     <option selected>N/A</option>
                     <option>Yes</option>
                     <option>No</option>
                 </select><br>
-                <strong>Error Type:</strong><br>
-                <select id="error-type">
-                    <option selected>Select Error Type</option>
-                    <option>The completed transfer did not arrive</option>
-                    <option>The transfer was late</option>
-                    <option>The Sender was charged the wrong amount</option>
-                    <option>The amount transferred to the recipient is incorrect</option>
-                    <option>The transfer was delivered to the wrong place or person</option>
-                    <option>Another issue not listed here</option>
+                <strong>Reason to create Reg-E:</strong> <textarea id="reason-rege" placeholder="N/A"></textarea><br>
+                Customer Email: <input type="text" id="cust-email"><br>
+                Customer Phone number: <input type="text" id="cust-phone"><br>
+                Reference Number: <input type="text" id="ref-num"><br>
+                Transaction Amount: <input type="text" id="trans-amt">
+
+                <div class="subsection">
+                    <strong>Did we miss the PDP?</strong> <select id="miss-pdp">
+                        <option selected>N/A</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select><br>
+                    <strong>Did we request any document in partner/risk review?</strong> <select id="request-doc">
+                        <option selected>N/A</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select><br>
+                    <strong>Error Apply:</strong> <select id="error-apply">
+                        <option selected>N/A</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select><br>
+                    <strong>Error Type:</strong><br>
+                    <select id="error-type">
+                        <option selected>Select Error Type</option>
+                        <option>The completed transfer did not arrive</option>
+                        <option>The transfer was late</option>
+                        <option>The Sender was charged the wrong amount</option>
+                        <option>The amount transferred to the recipient is incorrect</option>
+                        <option>The transfer was delivered to the wrong place or person</option>
+                        <option>Another issue not listed here</option>
+                    </select>
+                </div>
+
+                <strong>Remediation:</strong> <select id="remediation">
+                    <option selected>N/A</option>
+                    <option>Y</option>
+                    <option>N</option>
+                </select><br>
+                <strong>Compensation:</strong> <select id="compensation">
+                    <option selected>N/A</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                </select><br>
+                <strong>Resolution Outcome:</strong><br>
+                <select id="resolution">
+                    <option selected>N/A</option>
+                    <option>Refund of the Transaction Fee Only</option>
+                    <option>Cancellation of the Transaction with Full Refund</option>
+                    <option>Issuance of Credit or Promotional Offer</option>
+                    <option>Credit/Promo Not Applicable</option>
                 </select>
             </div>
-
-            <strong>Compensation:</strong> <select id="compensation">
-                <option selected>N/A</option>
-                <option>Yes</option>
-                <option>No</option>
-            </select><br>
-            <strong>Resolution/Outcome:</strong><br>
-            <select id="resolution">
-                <option selected>N/A</option>
-                <option>Refund of the Transaction Fee Only</option>
-                <option>Cancellation of the Transaction with Full Refund</option>
-                <option>Issuance of Credit or Promotional Offer</option>
-                <option>Credit/Promo Not Applicable</option>
-            </select>
         </div>
 
         <div class="section">
-            <strong>Resolution/Actions Taken:</strong><br>
-            <textarea id="resolution-actions" placeholder="N/A"></textarea>
+            <strong>Credit/Refund/Promo given by concessions case:</strong><br>
+            <textarea id="concessions" placeholder="N/A"></textarea>
         </div>
 
         <div class="section">
             <strong>Next CSA Action:</strong> <textarea id="next-action" placeholder="N/A"></textarea>
-        </div>
-
-        <div class="section">
-            <strong>Issue Resolved:</strong> <input type="text" id="issue-resolved" placeholder="N/A"><br>
-            <strong>Possible Repeat:</strong> <input type="text" id="possible-repeat" placeholder="N/A">
         </div>
 
         <div class="section" style="background: #FFF3CD; border-color: #FFEAA7;">
@@ -128,34 +151,83 @@
     </div>
 
     <script>
+        // Toggle phone field based on channel
+        function togglePhoneField() {
+            const channel = document.getElementById('channel').value;
+            const phoneLabel = document.getElementById('phone-label');
+            const phoneInput = document.getElementById('phone');
+            
+            if (channel === 'Phone') {
+                phoneLabel.classList.remove('hidden');
+                phoneInput.classList.remove('hidden');
+            } else {
+                phoneLabel.classList.add('hidden');
+                phoneInput.classList.add('hidden');
+                phoneInput.value = '';
+            }
+        }
+
+        // Toggle Reg-E section based on US customer
+        function toggleRegESection() {
+            const usCustomer = document.getElementById('us-customer').value;
+            const regEFields = document.getElementById('reg-e-fields');
+            
+            if (usCustomer === 'Yes') {
+                regEFields.classList.remove('hidden');
+            } else {
+                regEFields.classList.add('hidden');
+                // Clear Reg-E fields when hidden
+                document.getElementById('valid-rege').value = 'N/A';
+                document.getElementById('reason-rege').value = '';
+                document.getElementById('cust-email').value = '';
+                document.getElementById('cust-phone').value = '';
+                document.getElementById('ref-num').value = '';
+                document.getElementById('trans-amt').value = '';
+                document.getElementById('miss-pdp').value = 'N/A';
+                document.getElementById('request-doc').value = 'N/A';
+                document.getElementById('error-apply').value = 'N/A';
+                document.getElementById('error-type').value = 'Select Error Type';
+                document.getElementById('remediation').value = 'N/A';
+                document.getElementById('compensation').value = 'N/A';
+                document.getElementById('resolution').value = 'N/A';
+            }
+        }
+
         function copyAll() {
             let content = '';
-            content += '***CHAT/CALL***\n\n';
-            content += `Customer phone #: ${document.getElementById('phone').value || 'N/A'}\n`;
-            content += `Verifier: ${document.getElementById('verifier').value || 'N/A'}\n`;
-            content += `Concern: ${document.getElementById('concern').value || 'N/A'}\n`;
-            content += `Corridor: ${document.getElementById('corridor').value}\n\n`;
-            content += `Transaction Details:\n${document.getElementById('trans-details').value || 'N/A'}\n\n`;
-            content += `Refund Details:\n`;
-            content += `PDP Missed: ${document.getElementById('pdp').value || 'N/A'}\n`;
-            content += `Refunded: ${document.getElementById('refunded').value || 'N/A'}\n`;
-            content += `Refunded By: ${document.getElementById('refund-by').value || 'N/A'}\n\n`;
+            content += '***CS Notes***\n\n';
+            content += `Channel: ${document.getElementById('channel').value}\n`;
+            
+            if (document.getElementById('channel').value === 'Phone') {
+                content += `Customer phone #: ${document.getElementById('phone').value || 'N/A'}\n`;
+            }
+            content += `Reference number: ${document.getElementById('ref-number').value || 'N/A'}\n`;
+            content += `LPE: ${document.getElementById('lpe').value || 'N/A'}\n`;
+            content += `Customer Issue: ${document.getElementById('customer-issue').value || 'N/A'}\n\n`;
+            
+            content += `Current Transaction Status:\n${document.getElementById('trans-status').value || 'N/A'}\n\n`;
+            content += `Resolution provided:\n${document.getElementById('resolution-provided').value || 'N/A'}\n\n`;
 
-            content += `Reg-E:\n`;
-            content += `Valid Reg-E - ${document.getElementById('valid-rege').value}\n`;
-            content += `Customer Email: ${document.getElementById('cust-email').value || 'N/A'}\n`;
-            content += `Customer Phone number: ${document.getElementById('cust-phone').value || 'N/A'}\n`;
-            content += `Reference Number: ${document.getElementById('ref-num').value || 'N/A'}\n`;
-            content += `Transaction Amount: ${document.getElementById('trans-amt').value || 'N/A'}\n\n`;
-            content += `Error Apply: ${document.getElementById('error-apply').value}\n`;
-            content += `Error Type: ${document.getElementById('error-type').value === 'Select Error Type' ? 'N/A' : document.getElementById('error-type').value}\n`;
-            content += `Compensation: ${document.getElementById('compensation').value}\n\n`;
-            content += `Resolution/Outcome: ${document.getElementById('resolution').value}\n\n`;
+            // Reg-E section (only if US Customer = Yes)
+            if (document.getElementById('us-customer').value === 'Yes') {
+                content += `Reg-E (remove if non US customer)\n`;
+                content += `Valid Reg-E - ${document.getElementById('valid-rege').value}\n`;
+                content += `Reason to create Reg-E: ${document.getElementById('reason-rege').value || 'N/A'}\n`;
+                content += `Customer Email: ${document.getElementById('cust-email').value || 'N/A'}\n`;
+                content += `Customer Phone number: ${document.getElementById('cust-phone').value || 'N/A'}\n`;
+                content += `Reference Number: ${document.getElementById('ref-num').value || 'N/A'}\n`;
+                content += `Transaction Amount: ${document.getElementById('trans-amt').value || 'N/A'}\n\n`;
+                content += `Did we miss the PDP? ${document.getElementById('miss-pdp').value}\n`;
+                content += `Did we request any document in partner/risk review? ${document.getElementById('request-doc').value}\n`;
+                content += `Error Apply: ${document.getElementById('error-apply').value}\n`;
+                content += `Error Type: ${document.getElementById('error-type').value === 'Select Error Type' ? 'N/A' : document.getElementById('error-type').value}\n`;
+                content += `Remediation: ${document.getElementById('remediation').value}\n`;
+                content += `Compensation: ${document.getElementById('compensation').value}\n\n`;
+                content += `Resolution Outcome: ${document.getElementById('resolution').value}\n\n`;
+            }
 
-            content += `Resolution/Actions Taken:\n${document.getElementById('resolution-actions').value || 'N/A'}\n\n`;
-            content += `Next CSA Action:\n${document.getElementById('next-action').value || 'N/A'}\n\n`;
-            content += `Issue Resolved: ${document.getElementById('issue-resolved').value || 'N/A'}\n`;
-            content += `Possible Repeat: ${document.getElementById('possible-repeat').value || 'N/A'}`;
+            content += `Credit/Refund/Promo given by concessions case:\n${document.getElementById('concessions').value || 'N/A'}\n\n`;
+            content += `Next CSA Action:\n${document.getElementById('next-action').value || 'N/A'}`;
 
             navigator.clipboard.writeText(content).then(() => showPopup('COPIED'));
         }
@@ -184,6 +256,11 @@ The Remitly team`;
                 if (el.placeholder) el.value = '';
                 else if (el.tagName === 'SELECT') el.selectedIndex = 0;
             });
+            // Reset toggles
+            document.getElementById('phone-label').classList.add('hidden');
+            document.getElementById('phone').classList.add('hidden');
+            document.getElementById('phone').value = '';
+            document.getElementById('reg-e-fields').classList.add('hidden');
             showPopup('Notes Cleared');
         }
 
