@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Remitly Note Maker - Enhanced</title>
+    <title>Remitly Note Maker - Final</title>
     <style>
         body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background: #F5F5F5; }
         .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -25,13 +25,14 @@
             opacity: 0.6;
         }
         .hidden { display: none !important; }
+        .top-fields { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>***CS Notes***</h1>
 
-        <div class="section">
+        <div class="top-fields">
             <strong>Channel:</strong> 
             <select id="channel" onchange="togglePhoneField()">
                 <option selected>Chat</option>
@@ -40,12 +41,7 @@
             <strong id="phone-label" class="hidden">Customer phone #:</strong> <input type="text" id="phone" class="hidden" placeholder="N/A"><br>
             <strong>Reference number:</strong> <input type="text" id="ref-number" placeholder="N/A"><br>
             <strong>LPE:</strong> <input type="text" id="lpe" placeholder="N/A"><br>
-            <strong>Customer Issue:</strong> <textarea id="customer-issue" placeholder="N/A"></textarea>
-        </div>
-
-        <div class="section">
-            <strong>Current Transaction Status:</strong><br>
-            <textarea id="trans-status" placeholder="N/A"></textarea>
+            <strong>Customer Issue:</strong> <input type="text" id="customer-issue" placeholder="N/A">
         </div>
 
         <div class="section">
@@ -118,12 +114,12 @@
         </div>
 
         <div class="section">
-            <strong>Next CSA Action:</strong> <textarea id="next-action" placeholder="N/A"></textarea>
+            <strong>Next CSA/CPT Action:</strong> <textarea id="next-csa-cpt-action" placeholder="N/A"></textarea>
         </div>
 
         <div class="section" style="background: #FFF3CD; border-color: #FFEAA7;">
             <strong style="color: #856404;">NO REG-E/EMAIL FIELDS (ONLY APPLIES IF NO ERROR REG-E)</strong><br>
-            <strong>Customer Name:</strong> <input type="text" id="customer-name" placeholder="Customer Name"><br>
+            <strong>Customer Name:</strong> <input type="text" id="customer-name" placeholder="Customer Name" autocomplete="off"><br>
             <strong>Date of Error:</strong> <input type="text" id="error-date" placeholder="date of error assertion"><br>
             <strong>Error Reported:</strong> <textarea id="error-reported" placeholder="error reported"></textarea><br>
             <strong>Transfer Number:</strong> <input type="text" id="transfer-num" placeholder="transfer number if applicable">
@@ -177,7 +173,6 @@
                 document.getElementById('request-doc').value = 'N/A';
                 document.getElementById('error-apply').value = 'N/A';
                 document.getElementById('error-type').value = 'Select Error Type';
-                document.getElementById('remediation').value = 'N/A';
                 document.getElementById('compensation').value = 'N/A';
                 document.getElementById('resolution').value = 'N/A';
             }
@@ -192,10 +187,8 @@
                 content += `Customer phone #: ${document.getElementById('phone').value || 'N/A'}\n`;
             }
             content += `Reference number: ${document.getElementById('ref-number').value || 'N/A'}\n`;
-            content += `LPE: ${document.getElementById('lpe').value || 'N/A'}\n`;
+            content += `LPE: ${document.getElementById('lpe').value || 'N/A'}\n\n`;
             content += `Customer Issue: ${document.getElementById('customer-issue').value || 'N/A'}\n\n`;
-            
-            content += `Current Transaction Status:\n${document.getElementById('trans-status').value || 'N/A'}\n\n`;
             content += `Resolution provided:\n${document.getElementById('resolution-provided').value || 'N/A'}\n\n`;
 
             // Reg-E section (only if US Customer = Yes)
@@ -211,12 +204,11 @@
                 content += `Did we request any document in partner/risk review? ${document.getElementById('request-doc').value}\n`;
                 content += `Error Apply: ${document.getElementById('error-apply').value}\n`;
                 content += `Error Type: ${document.getElementById('error-type').value === 'Select Error Type' ? 'N/A' : document.getElementById('error-type').value}\n`;
-                content += `Remediation: ${document.getElementById('remediation').value}\n`;
                 content += `Compensation: ${document.getElementById('compensation').value}\n\n`;
                 content += `Resolution Outcome: ${document.getElementById('resolution').value}\n\n`;
             }
 
-            content += `Next CSA Action:\n${document.getElementById('next-action').value || 'N/A'}`;
+            content += `Next CSA/CPT Action:\n${document.getElementById('next-csa-cpt-action').value || 'N/A'}`;
 
             navigator.clipboard.writeText(content).then(() => showPopup('COPIED'));
         }
